@@ -26,7 +26,7 @@ def predict():
     id = [x for x in request.form.values()]
     val = id[0] 
     str_val = str(val)
-    #download_comments_and_content(str_val)-----
+    download_comments_and_content(str_val)
     
     df = pd.read_csv('data.csv')
     X = df.drop('cid',axis =1)
@@ -49,18 +49,23 @@ def predict():
     # concatinate the output values to comment excel file
     #comment_file = pd.read_excel('commentData.xlsx')
     prediction_series = pd.Series(prediction)
+    
     df1= pd.concat([df,prediction_series], axis=1)
     df1 = df1.rename(columns={0: 'is_spam'})
     id_group = df1.groupby(['is_spam'])
     spam_group = id_group.get_group(1)
     spam_list = spam_group['cid'].tolist()
     
+    total_comments = len(prediction_series)
+    spam_commnets = len(spam_list)
+    spam_presentage = (spam_commnets/total_comments)*100
+    
     #spam_id_list = spam_comments_ids.tolist()
     #string_ids = [str(li) for li in spam_id_list]
     
     get_ham_comments(str_val,spam_list)
     #return render_template('index.html', prediction_text='Employee Salary should be $ {}'.format(prediction))
-    return render_template('index.html', prediction_text=spam_list)
+    return render_template('index.html', prediction_text="spam comments presentage of this video is {}".format(spam_presentage))
     #return render_template('index.html', prediction_text="download success")
 
 # =============================================================================
@@ -77,4 +82,4 @@ def predict():
 # =============================================================================
 
 if __name__ == "__main__":
-    app.run(debug=True, use_reloader=True)
+    app.run(debug=True, use_reloader=False)

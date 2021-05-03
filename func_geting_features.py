@@ -145,6 +145,10 @@ def check_black_words_list(text):
         if word == check_word(word):
             val += 1
    
+    if words_count == 0:
+        
+        words_count = 1
+   
     ratio = val/words_count
     
     return ratio             
@@ -155,7 +159,8 @@ def check_black_words_list(text):
 def duplicate_words(sentence):
     token = sentence
     num_words = len(token)
-   # print("number of words ??????????????????????????????????????????????????? ",num_words)
+    if num_words == 0:
+        num_words = 1
     uniq_words = len(np.unique(token))
     ratio = 1 - (uniq_words/num_words)
     return ratio

@@ -296,6 +296,8 @@ def get_video_comments(service, **kwargs):
                 text = np.char.replace(text, ',', '')
             
             tokens = word_tokenize(str(text))
+            if len(tokens) == 0 :
+                continue
             length = len(tokens)/2
             pattern = re.compile("[A-Za-z]+")
             count = 0
