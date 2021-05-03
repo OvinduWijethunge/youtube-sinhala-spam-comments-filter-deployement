@@ -2,11 +2,16 @@
 __pycache__/
 *.py[cod]
 *$py.class
+.ipynb_checkpoints
+
 
 # C extensions
 *.so
 
+
 # Distribution / packaging
+client_secret.json
+token.pickle
 .Python
 build/
 develop-eggs/
