@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify, render_template
 import pickle
 
 from youtubeData_v3 import download_comments_and_content
-#from comments_downlod_to_hate_module import get_ham_comments
+from comments_downlod_to_hate_module import get_ham_comments
 
 from sklearn.preprocessing import StandardScaler
 
@@ -58,7 +58,7 @@ def predict():
     #spam_id_list = spam_comments_ids.tolist()
     #string_ids = [str(li) for li in spam_id_list]
     
-    #get_ham_comments(str_val,string_ids)
+    get_ham_comments(str_val,spam_list)
     #return render_template('index.html', prediction_text='Employee Salary should be $ {}'.format(prediction))
     return render_template('index.html', prediction_text=spam_list)
     #return render_template('index.html', prediction_text="download success")

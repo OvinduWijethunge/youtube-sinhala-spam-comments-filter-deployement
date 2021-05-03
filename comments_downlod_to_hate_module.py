@@ -128,6 +128,7 @@ def write_to_excel(d_list):
         wb.close()
         
     
+
 def remove_spam_comments(comment_list,spamId_list):
     ham_comments_list = []   
     
@@ -137,10 +138,11 @@ def remove_spam_comments(comment_list,spamId_list):
         if comment[2] in spamId_list:
             
             continue
-       
+        
         else:
             ham_comments_list.append(comment)
     return ham_comments_list        
+
 
 
  
@@ -218,7 +220,7 @@ def get_video_comments(service, **kwargs):
     return data_list
 
 
-def get_ham_comments(video_id,id_list):
+def get_ham_comments(video_id,spam_list):
     # When running locally, disable OAuthlib's HTTPs verification. When
     # running in production *do not* leave this option enabled.
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
@@ -228,7 +230,7 @@ def get_ham_comments(video_id,id_list):
    
     
     data_list = get_video_comments(service, part= 'id,snippet', videoId=videoId, textFormat='plainText')
-    ham_data_list = remove_spam_comments(data_list,id_list)
+    ham_data_list = remove_spam_comments(data_list,spam_list)
     #print(data_list)
      #write_to_csv(data_list)
     #print("date is ",date_title)
