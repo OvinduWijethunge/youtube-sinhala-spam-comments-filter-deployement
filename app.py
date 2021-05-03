@@ -7,11 +7,11 @@ from youtubeData_v3 import download_comments_and_content
 from comments_downlod_to_hate_module import get_ham_comments
 
 from sklearn.preprocessing import StandardScaler
-
+import scipy.stats as stat
 
 
 app = Flask(__name__)
-model = pickle.load(open('dt.pkl', 'rb'))
+model = pickle.load(open('logistic_Regression.pkl', 'rb'))
 scaler = pickle.load(open('scaler.pkl', 'rb'))
 
 @app.route('/')
@@ -26,10 +26,17 @@ def predict():
     id = [x for x in request.form.values()]
     val = id[0] 
     str_val = str(val)
-    download_comments_and_content(str_val)
+    #download_comments_and_content(str_val)
     
     df = pd.read_csv('data.csv')
     X = df.drop('cid',axis =1)
+    ## data transformation process
+    
+    X['sim_content']=X['sim_content']**(1/1.2)
+    X['sim_comment']=np.log(X['sim_comment']+1)
+    X['word_count'],parameters=stat.boxcox(X['word_count']+1)
+    X['length_of_comment'],parameters=stat.boxcox(X['length_of_comment']+1)
+    X['post_coment_gap'],parameters=stat.boxcox(X['post_coment_gap'])
     
     #scaler = StandardScaler()
     #scaler.fit(df)
