@@ -38,7 +38,7 @@ from moviepy.editor import *
 import os, shutil
 
 
-
+from main_script_v5 import mainScript
 
 
 CLIENT_SECRETS_FILE = "client_secret.json" # for more information   https://python.gotrained.com/youtube-api-extracting-comments/
@@ -90,99 +90,83 @@ def get_authenticated_service():
 
 
 def write_to_excel_content(content_list):
-    if os.path.exists('./testcontents.xlsx'):
-        wb = openpyxl.load_workbook('testcontents.xlsx')
-        worksheet = wb.active
-        for listx in content_list:
-            
-            worksheet.append(listx)
-            
-        wb.save('testcontents.xlsx')
-        wb.close()
-    else:
-        wb = openpyxl.Workbook()
-        dest_filename = 'testcontents.xlsx'
-        worksheet = wb.active
-         
-        worksheet['A1']= 'content' 
-        worksheet['B1']= 'vid'
-       
-        row_count = 2
-        for listx in content_list:
-            
-            list_index = 0
-            for j in range(1,len(listx)+1):
-                
-                worksheet.cell(row=row_count, column=j).value = listx[list_index]    # count , j = row , column
-                list_index +=1
-            row_count = row_count + 1
+   
+    wb = openpyxl.Workbook()
+    dest_filename = 'contents.xlsx'
+    worksheet = wb.active
+     
+    worksheet['A1']= 'content' 
+    worksheet['B1']= 'vid'
+   
+    row_count = 2
+    for listx in content_list:
         
-        wb.save(filename = dest_filename) 
-        wb.close()
+        list_index = 0
+        for j in range(1,len(listx)+1):
+            
+            worksheet.cell(row=row_count, column=j).value = listx[list_index]    # count , j = row , column
+            list_index +=1
+        row_count = row_count + 1
+    
+    wb.save(filename = dest_filename) 
+    wb.close()
     
     
 
 
 def write_to_excel(d_list):
-    if os.path.exists('./testcomments.xlsx'):
-        wb = openpyxl.load_workbook('testcomments.xlsx')
-        worksheet = wb.active
-        for listx in d_list:
-            
-            worksheet.append(listx)
-            
-        wb.save('testcomments.xlsx')
-        wb.close()
-    else:
-        wb = openpyxl.Workbook()
-        dest_filename = 'testcomments.xlsx'
-        worksheet = wb.active
-         
-        worksheet['A1']= 'vid' 
-        worksheet['B1']= 'vdate'
-        worksheet['C1']= 'comment_id'
-        worksheet['D1']= 'comment'
-        worksheet['E1']= 'channel_id'
-        worksheet['F1']= 'video_title'
-        worksheet['G1']= 'like_count'
-        worksheet['H1']= 'published_date'
-        worksheet['I1']= 'updated_date'
-    
-        row_count = 2
-        for listx in d_list:
-            
-            list_index = 0
-            for j in range(1,len(listx)+1):
-                
-                worksheet.cell(row=row_count, column=j).value = listx[list_index]    # count , j = row , column
-                list_index +=1
-            row_count = row_count + 1
+   
+    wb = openpyxl.Workbook()
+    dest_filename = 'comments.xlsx'
+    worksheet = wb.active
+     
+    worksheet['A1']= 'vid' 
+    worksheet['B1']= 'vdate'
+    worksheet['C1']= 'comment_id'
+    worksheet['D1']= 'comment'
+    worksheet['E1']= 'channel_id'
+    worksheet['F1']= 'video_title'
+    worksheet['G1']= 'like_count'
+    worksheet['H1']= 'published_date'
+    worksheet['I1']= 'updated_date'
+
+    row_count = 2
+    for listx in d_list:
         
-        wb.save(filename = dest_filename) 
-        wb.close()
+        list_index = 0
+        for j in range(1,len(listx)+1):
+            
+            worksheet.cell(row=row_count, column=j).value = listx[list_index]    # count , j = row , column
+            list_index +=1
+        row_count = row_count + 1
     
+    wb.save(filename = dest_filename) 
+    wb.close()
+
 
     
 
-def write_to_csv(data_list):
-    list_big = []
-    list_add = []
-    fields = ["vid","comment_id","comment","channel_id","video_title","like_count","published_date","updated_date"]
-    # print("coments ",comments)
-    
-    for i in range(0,len(data_list)):
-        list_add = data_list[i]
-        stringList1 = [str(x) for x in list_add]
-        print(stringList1)
-        list_big.append(stringList1)
-    print("list big ",list_big)   
-
-    filename = "ManiyaApiDataCsv.csv"
-    with open(filename, 'w', newline='', encoding='utf-16') as csvfile:
-        csvwriter = csv.writer(csvfile, delimiter='\t')
-        csvwriter.writerow(fields)
-        csvwriter.writerows(list_big)
-        
+# =============================================================================
+# def write_to_csv(data_list):
+#     list_big = []
+#     list_add = []
+#     fields = ["vid","comment_id","comment","channel_id","video_title","like_count","published_date","updated_date"]
+#     # print("coments ",comments)
+#     
+#     for i in range(0,len(data_list)):
+#         list_add = data_list[i]
+#         stringList1 = [str(x) for x in list_add]
+#         print(stringList1)
+#         list_big.append(stringList1)
+#     print("list big ",list_big)   
+# 
+#     filename = "ManiyaApiDataCsv.csv"
+#     with open(filename, 'w', newline='', encoding='utf-16') as csvfile:
+#         csvwriter = csv.writer(csvfile, delimiter='\t')
+#         csvwriter.writerow(fields)
+#         csvwriter.writerows(list_big)
+#         
+# =============================================================================
 #      output file  2mq3pCIN7A0  
 #       sinahala    4edY1pNRmnI ,kanna = F4OKB86r9BQ  chathura = loO6ws2X50Y 
 #       mandha pama RsEoXcrnSxg  , pandhama GNgmUYAsB-M yohani Y60Z56MDIv4
@@ -210,8 +194,8 @@ def convert_audio_to_text(filepath, chunksize=30000):
         
         for index,chunk in enumerate(chunks):
             #TODO io.BytesIO()
-            chunk.export('E:/Machine_Learning_Projects/youtube spam classifier/alfa.wav', format='wav')
-            with sr.AudioFile('E:/Machine_Learning_Projects/youtube spam classifier/alfa.wav') as source:
+            chunk.export('E:/youtube-sinhala-spam-comments-filter-deployement/alfa.wav', format='wav')
+            with sr.AudioFile('E:/youtube-sinhala-spam-comments-filter-deployement/alfa.wav') as source:
                 audio = r.record(source)
             #s = r.recognize_google(audio, language="en-US") #, key=API_KEY) --- my key results in broken pipe
             response = r.recognize_google(audio, language="si-LK")
@@ -317,7 +301,7 @@ def get_video_comments(service, **kwargs):
             count = 0
             for token in tokens: # for a word
                 if pattern.fullmatch(token) is not None:
-                    count = count + 1
+                    count = count + 1   # detect english words
             if count >= length:
                 continue
             
@@ -354,21 +338,19 @@ def get_video_comments(service, **kwargs):
     return data_list
 
 
-if __name__ == '__main__':
+def download_comments_and_content(video_id):
     # When running locally, disable OAuthlib's HTTPs verification. When
     # running in production *do not* leave this option enabled.
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     service = get_authenticated_service()
-    videoId = input('Enter Video id : ') # video id here (the video id of https://www.youtube.com/watch?v=vedLpKXzZqE -> is vedLpKXzZqE)
-    date_title = get_video_date(videoId) 
+    videoId = video_id
+    get_video_date(videoId) 
     data_list = get_video_comments(service, part= 'id,snippet', videoId=videoId, textFormat='plainText')
     print(data_list)
-    video_content = get_video_content(videoId)  # 0FXKASB1Bd0 _VLjevnS8lw  loO6ws2X50Y
-                                                   # #  BW38guk_fQQ  Rjb9sLL0LZI lUukWG4Fqow
+    video_content = get_video_content(videoId)  # 0FXKASB1Bd0 _VLjevnS8lw  loO6ws2X50Y# #  BW38guk_fQQ  Rjb9sLL0LZI lUukWG4Fqow                                             
     write_to_excel(data_list)
     content_list = [[video_content,videoId]]
     write_to_excel_content(content_list)
-  
-#print(len(data_list))
+    mainScript()
 
-#print("my comments ",comments)
+
