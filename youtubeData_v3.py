@@ -146,32 +146,7 @@ def write_to_excel(d_list):
 
     
 
-# =============================================================================
-# def write_to_csv(data_list):
-#     list_big = []
-#     list_add = []
-#     fields = ["vid","comment_id","comment","channel_id","video_title","like_count","published_date","updated_date"]
-#     # print("coments ",comments)
-#     
-#     for i in range(0,len(data_list)):
-#         list_add = data_list[i]
-#         stringList1 = [str(x) for x in list_add]
-#         print(stringList1)
-#         list_big.append(stringList1)
-#     print("list big ",list_big)   
-# 
-#     filename = "ManiyaApiDataCsv.csv"
-#     with open(filename, 'w', newline='', encoding='utf-16') as csvfile:
-#         csvwriter = csv.writer(csvfile, delimiter='\t')
-#         csvwriter.writerow(fields)
-#         csvwriter.writerows(list_big)
-#         
-# =============================================================================
-#      output file  2mq3pCIN7A0  
-#       sinahala    4edY1pNRmnI ,kanna = F4OKB86r9BQ  chathura = loO6ws2X50Y 
-#       mandha pama RsEoXcrnSxg  , pandhama GNgmUYAsB-M yohani Y60Z56MDIv4
-# ratta  RVHZFAFW6rA
-# maniya GT9-SQO3aH4
+
 
 
 def convert_audio_to_text(filepath, chunksize=30000):
@@ -255,7 +230,7 @@ def de_emojies(text1):
          u"\U00002702-\U000027B0"
                            u"\U000024C2-\U0001F251"
                            "]+", flags = re.UNICODE)
-    text = regrex_pattern.sub(r'',text1)
+    text = regrex_pattern.sub(r' ',text1)
   
     return text
  
@@ -292,24 +267,25 @@ def get_video_comments(service, **kwargs):
                 
     
                 text = np.char.replace(text, symbols[i], ' ')
-                text = np.char.replace(text, "  ", " ")
-                text = np.char.replace(text, ',', '')
+                #text = np.char.replace(text, "  ", " ")
+                text = np.char.replace(text, ',', ' ')
             
             tokens = word_tokenize(str(text))
-            if len(tokens) == 0 :
-                continue
+            #st =''.join(tokens)
+            #if len(st.strip()) == 0 :
+                #continue
             length = len(tokens)/2
             pattern = re.compile("[A-Za-z]+")
             count = 0
             for token in tokens: # for a word
-                if pattern.fullmatch(token) is not None:
+                if pattern.fullmatch(token) is not None: # if someone use english he does not use sinhala
                     count = count + 1   # detect english words
             if count >= length:
                 continue
             
             re_text = de_emojies(comment)
-            
-            if length <= 1:
+            le_text = len(re_text)
+            if len(re_text) <= 1:
                 continue
             #30MRBuXy2RE&list=PLcJsqwQYyc2j4JXT5CKNF_DaR-D0KFdyL
             data_row.append(re_text)
@@ -340,19 +316,37 @@ def get_video_comments(service, **kwargs):
     return data_list
 
 
-def download_comments_and_content(video_id):
+# =============================================================================
+# def download_comments_and_content(video_id):
+#     # When running locally, disable OAuthlib's HTTPs verification. When
+#     # running in production *do not* leave this option enabled.
+#     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+#     service = get_authenticated_service()
+#     videoId = video_id
+#     get_video_date(videoId) 
+#     data_list = get_video_comments(service, part= 'id,snippet', videoId=videoId, textFormat='plainText')
+#     print(data_list)
+#     video_content = get_video_content(videoId)  # 0FXKASB1Bd0 _VLjevnS8lw  loO6ws2X50Y# #  BW38guk_fQQ  Rjb9sLL0LZI lUukWG4Fqow                                             
+#     write_to_excel(data_list)
+#     content_list = [[video_content,videoId]]
+#     write_to_excel_content(content_list)
+#     mainScript()
+# 
+# =============================================================================
+
+
+
+if __name__ == '__main__':
     # When running locally, disable OAuthlib's HTTPs verification. When
     # running in production *do not* leave this option enabled.
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     service = get_authenticated_service()
-    videoId = video_id
-    get_video_date(videoId) 
+    videoId = input('Enter Video id : ') # video id here (the video id of https://www.youtube.com/watch?v=vedLpKXzZqE -> is vedLpKXzZqE)
+    date_title = get_video_date(videoId) 
     data_list = get_video_comments(service, part= 'id,snippet', videoId=videoId, textFormat='plainText')
     print(data_list)
-    video_content = get_video_content(videoId)  # 0FXKASB1Bd0 _VLjevnS8lw  loO6ws2X50Y# #  BW38guk_fQQ  Rjb9sLL0LZI lUukWG4Fqow                                             
+    #video_content = get_video_content(videoId)  # 0FXKASB1Bd0 _VLjevnS8lw  loO6ws2X50Y
+                                                   # #  wexrfbaz-z4
     write_to_excel(data_list)
-    content_list = [[video_content,videoId]]
-    write_to_excel_content(content_list)
-    mainScript()
-
-
+    #content_list = [[video_content,videoId]]
+    #write_to_excel_content(content_list)
