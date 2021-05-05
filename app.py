@@ -9,9 +9,11 @@ from comments_downlod_to_hate_module import get_ham_comments
 from sklearn.preprocessing import StandardScaler
 import scipy.stats as stat
 
+from dataframe_modify import data_modification
+
 
 app = Flask(__name__)
-model = pickle.load(open('logistic_Regression.pkl', 'rb'))
+model = pickle.load(open('gboostv1.pkl', 'rb'))
 scaler = pickle.load(open('scaler.pkl', 'rb'))
 
 @app.route('/')
@@ -26,24 +28,19 @@ def predict():
     id = [x for x in request.form.values()]
     val = id[0] 
     str_val = str(val)
-    #download_comments_and_content(str_val)
+    download_comments_and_content(str_val) # gmsUIoMSgsY
     
     df = pd.read_csv('data.csv')
+    data_frame = data_modification(df)
     X = df.drop('cid',axis =1)
-    ## data transformation process
     
-    X['sim_content']=X['sim_content']**(1/1.2)
-    X['sim_comment']=np.log(X['sim_comment']+1)
-    X['word_count'],parameters=stat.boxcox(X['word_count']+1)
-    X['length_of_comment'],parameters=stat.boxcox(X['length_of_comment']+1)
-    X['post_coment_gap'],parameters=stat.boxcox(X['post_coment_gap'])
     
     #scaler = StandardScaler()
     #scaler.fit(df)
-    X_scaled = scaler.transform(X)
+    #X_scaled = scaler.transform(X)
     #input_list = df.values.tolist()
     
-    prediction = model.predict(X_scaled)
+    prediction = model.predict(X.values.tolist())
     print(prediction)
     #output = round(prediction[0], 2)
     #x = [-0.501935,-0.0559087,-0.0161989,-0.297034,-0.601665,-0.235129,-0.267696,-0.372999,-0.622836,-0.407599,1.26674,-0.58052,-0.328634]

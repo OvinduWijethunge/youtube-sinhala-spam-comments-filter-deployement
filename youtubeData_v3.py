@@ -316,37 +316,39 @@ def get_video_comments(service, **kwargs):
     return data_list
 
 
-# =============================================================================
-# def download_comments_and_content(video_id):
-#     # When running locally, disable OAuthlib's HTTPs verification. When
-#     # running in production *do not* leave this option enabled.
-#     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-#     service = get_authenticated_service()
-#     videoId = video_id
-#     get_video_date(videoId) 
-#     data_list = get_video_comments(service, part= 'id,snippet', videoId=videoId, textFormat='plainText')
-#     print(data_list)
-#     video_content = get_video_content(videoId)  # 0FXKASB1Bd0 _VLjevnS8lw  loO6ws2X50Y# #  BW38guk_fQQ  Rjb9sLL0LZI lUukWG4Fqow                                             
-#     write_to_excel(data_list)
-#     content_list = [[video_content,videoId]]
-#     write_to_excel_content(content_list)
-#     mainScript()
-# 
-# =============================================================================
 
-
-
-if __name__ == '__main__':
+def download_comments_and_content(video_id):
     # When running locally, disable OAuthlib's HTTPs verification. When
     # running in production *do not* leave this option enabled.
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     service = get_authenticated_service()
-    videoId = input('Enter Video id : ') # video id here (the video id of https://www.youtube.com/watch?v=vedLpKXzZqE -> is vedLpKXzZqE)
-    date_title = get_video_date(videoId) 
+    videoId = video_id
+    get_video_date(videoId) 
     data_list = get_video_comments(service, part= 'id,snippet', videoId=videoId, textFormat='plainText')
     print(data_list)
-    #video_content = get_video_content(videoId)  # 0FXKASB1Bd0 _VLjevnS8lw  loO6ws2X50Y
-                                                   # #  wexrfbaz-z4
+    video_content = get_video_content(videoId)  # 0FXKASB1Bd0 _VLjevnS8lw  loO6ws2X50Y# #  BW38guk_fQQ  Rjb9sLL0LZI lUukWG4Fqow                                             
     write_to_excel(data_list)
-    #content_list = [[video_content,videoId]]
-    #write_to_excel_content(content_list)
+    content_list = [[video_content,videoId]]
+    write_to_excel_content(content_list)
+    mainScript()
+
+
+
+
+
+# =============================================================================
+# if __name__ == '__main__':
+#     # When running locally, disable OAuthlib's HTTPs verification. When
+#     # running in production *do not* leave this option enabled.
+#     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+#     service = get_authenticated_service()
+#     videoId = input('Enter Video id : ') # video id here (the video id of https://www.youtube.com/watch?v=vedLpKXzZqE -> is vedLpKXzZqE)
+#     date_title = get_video_date(videoId) 
+#     data_list = get_video_comments(service, part= 'id,snippet', videoId=videoId, textFormat='plainText')
+#     print(data_list)
+#     #video_content = get_video_content(videoId)  # 0FXKASB1Bd0 _VLjevnS8lw  loO6ws2X50Y
+#                                                    # #  wexrfbaz-z4
+#     write_to_excel(data_list)
+#     #content_list = [[video_content,videoId]]
+#     #write_to_excel_content(content_list)
+# =============================================================================
