@@ -32,7 +32,7 @@ def predict():
     
     df = pd.read_csv('data.csv')
     data_frame = data_modification(df)
-    X = df.drop('cid',axis =1)
+    #X = df.drop('cid',axis =1)
     
     
     #scaler = StandardScaler()
@@ -40,7 +40,7 @@ def predict():
     #X_scaled = scaler.transform(X)
     #input_list = df.values.tolist()
     
-    prediction = model.predict(X.values.tolist())
+    prediction = model.predict(data_frame.values.tolist())
     print(prediction)
     #output = round(prediction[0], 2)
     #x = [-0.501935,-0.0559087,-0.0161989,-0.297034,-0.601665,-0.235129,-0.267696,-0.372999,-0.622836,-0.407599,1.26674,-0.58052,-0.328634]
