@@ -31,7 +31,10 @@ def predict():
     download_comments_and_content(str_val) # gmsUIoMSgsY
     
     df = pd.read_csv('data.csv')
+    df.loc[len(df.index)] = ['kkkkkkkkkk',0.2426999584083827,0.2337711999415263,7,0.1428571428571429,1,39,0,0,0.0,4550827.0,0.0,0,0,1,0.0]
     data_frame = data_modification(df)
+    data_frame = data_frame.drop(data_frame.index[-1])
+    ldd= data_frame.columns
     #X = df.drop('cid',axis =1)
     
     
@@ -58,7 +61,9 @@ def predict():
     df1 = df1.rename(columns={0: 'is_spam'})
     id_group = df1.groupby(['is_spam'])
     spam_group = id_group.get_group(1)
+    ham_group = id_group.get_group(0)
     spam_list = spam_group['cid'].tolist()
+    ham_list = ham_group['cid'].tolist()
     
     total_comments = len(prediction_series)
     spam_commnets = len(spam_list)
@@ -67,7 +72,7 @@ def predict():
     #spam_id_list = spam_comments_ids.tolist()
     #string_ids = [str(li) for li in spam_id_list]
     
-    get_ham_comments(str_val,spam_list)
+    get_ham_comments(str_val,spam_list,ham_list)
     #return render_template('index.html', prediction_text='Employee Salary should be $ {}'.format(prediction))
     return render_template('index.html', prediction_text="spam comments presentage of this video is {}".format(spam_presentage))
     #return render_template('index.html', prediction_text="download success")

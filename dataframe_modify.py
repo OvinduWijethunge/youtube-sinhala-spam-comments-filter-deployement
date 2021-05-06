@@ -20,6 +20,8 @@ def data_modification(df):
     dfs['length_of_comment'],parameters=stat.boxcox(dfs['length_of_comment']+0.000001)
     dfs['post_coment_gap'],parameters=stat.boxcox(dfs['post_coment_gap']+0.000001)
     
+    
+    
     dfs['no_of_sentences'] = dfs['no_of_sentences'].astype(str)
     dfs['num_of_punctuations'] = dfs['num_of_punctuations'].astype(str)
     dfs['is_period_sequence'] = dfs['is_period_sequence'].astype(str)
@@ -27,6 +29,8 @@ def data_modification(df):
     dfs['is_youtube_link'] = dfs['is_youtube_link'].astype(str)
     dfs['is_number'] = dfs['is_number'].astype(str)
     
-    new_df = pd.get_dummies(dfs,drop_first=True)
+     
     
+    new_df = pd.get_dummies(dfs,drop_first=True)
+    print(new_df.columns)
     return new_df

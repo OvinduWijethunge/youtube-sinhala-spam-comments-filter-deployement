@@ -90,42 +90,63 @@ def get_authenticated_service():
 
 
 def write_to_excel(d_list):
-    if os.path.exists('./hamData.xlsx'):
-        wb = openpyxl.load_workbook('hamData.xlsx')
-        worksheet = wb.active
-        for listx in d_list:
-            
-            worksheet.append(listx)
-            
-        wb.save('hamData.xlsx')
-        wb.close()
-    else:
-        wb = openpyxl.Workbook()
-        dest_filename = 'hamData.xlsx'
-        worksheet = wb.active
-         
-        worksheet['A1']= 'vid' 
-        worksheet['B1']= 'vdate'
-        worksheet['C1']= 'comment_id'
-        worksheet['D1']= 'comment'
-        worksheet['E1']= 'channel_id'
-        worksheet['F1']= 'video_title'
-        worksheet['G1']= 'like_count'
-        worksheet['H1']= 'published_date'
-        worksheet['I1']= 'updated_date'
     
-        row_count = 2
-        for listx in d_list:
-            
-            list_index = 0
-            for j in range(1,len(listx)+1):
-                
-                worksheet.cell(row=row_count, column=j).value = listx[list_index]    # count , j = row , column
-                list_index +=1
-            row_count = row_count + 1
+    wb = openpyxl.Workbook()
+    dest_filename = 'hamData.xlsx'
+    worksheet = wb.active
+     
+    worksheet['A1']= 'vid' 
+    worksheet['B1']= 'vdate'
+    worksheet['C1']= 'comment_id'
+    worksheet['D1']= 'comment'
+    worksheet['E1']= 'channel_id'
+    worksheet['F1']= 'video_title'
+    worksheet['G1']= 'like_count'
+    worksheet['H1']= 'published_date'
+    worksheet['I1']= 'updated_date'
+
+    row_count = 2
+    for listx in d_list:
         
-        wb.save(filename = dest_filename) 
-        wb.close()
+        list_index = 0
+        for j in range(1,len(listx)+1):
+            
+            worksheet.cell(row=row_count, column=j).value = listx[list_index]    # count , j = row , column
+            list_index +=1
+        row_count = row_count + 1
+    
+    wb.save(filename = dest_filename) 
+    wb.close()
+        
+        
+def write_to_excel_spam(d_list):
+    
+    wb = openpyxl.Workbook()
+    dest_filename = 'spamData.xlsx'
+    worksheet = wb.active
+     
+    worksheet['A1']= 'vid' 
+    worksheet['B1']= 'vdate'
+    worksheet['C1']= 'comment_id'
+    worksheet['D1']= 'comment'
+    worksheet['E1']= 'channel_id'
+    worksheet['F1']= 'video_title'
+    worksheet['G1']= 'like_count'
+    worksheet['H1']= 'published_date'
+    worksheet['I1']= 'updated_date'
+
+    row_count = 2
+    for listx in d_list:
+        
+        list_index = 0
+        for j in range(1,len(listx)+1):
+            
+            worksheet.cell(row=row_count, column=j).value = listx[list_index]    # count , j = row , column
+            list_index +=1
+        row_count = row_count + 1
+    
+    wb.save(filename = dest_filename) 
+    wb.close()        
         
     
 
@@ -143,7 +164,19 @@ def remove_spam_comments(comment_list,spamId_list):
             ham_comments_list.append(comment)
     return ham_comments_list        
 
-
+def remove_ham_comments(data_list,ham_list):
+    spam_comments_list = []   
+    
+    comments = data_list
+    for comment in comments:
+        
+        if comment[2] in ham_list:
+            
+            continue
+        
+        else:
+            spam_comments_list.append(comment)
+    return spam_comments_list    
 
  
 
@@ -220,7 +253,7 @@ def get_video_comments(service, **kwargs):
     return data_list
 
 
-def get_ham_comments(video_id,spam_list):
+def get_ham_comments(video_id,spam_list,ham_list):
     # When running locally, disable OAuthlib's HTTPs verification. When
     # running in production *do not* leave this option enabled.
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
@@ -231,10 +264,12 @@ def get_ham_comments(video_id,spam_list):
     
     data_list = get_video_comments(service, part= 'id,snippet', videoId=videoId, textFormat='plainText')
     ham_data_list = remove_spam_comments(data_list,spam_list)
+    spam_data_list = remove_ham_comments(data_list,ham_list)
     #print(data_list)
      #write_to_csv(data_list)
     #print("date is ",date_title)
     write_to_excel(ham_data_list)
+    write_to_excel_spam(spam_data_list)
     
 #video_id = 'BHhl75a5bks'
 #id_list  = ['Ugy41He-E7NJsT2dfDl4AaABAg','UgxgZPVRvPhTX_SyDEx4AaABAg','Ugz_wx-oufFe_q9-Wfh4AaABAg']  
