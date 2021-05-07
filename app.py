@@ -31,8 +31,14 @@ def predict():
     download_comments_and_content(str_val) # gmsUIoMSgsY
     
     df = pd.read_csv('data.csv')
-    df.loc[len(df.index)] = ['kkkkkkkkkk',0.2426999584083827,0.2337711999415263,7,0.1428571428571429,1,39,0,0,0.0,4550827.0,0.0,0,0,1,0.0]
+    df.loc[len(df.index)] = ['kkkkkkkkkk',0.2426999584083827,0.2337711999415263,7,0.1428571428571429,1,39,1,1,0.0,4550827.0,0.0,1,1,1,0.0]
+    df.loc[len(df.index)] = ['kkkkkkkkkk',0.2426999584083827,0.2337711999415263,7,0.1428571428571429,1,39,2,0,0.0,4550827.0,0.0,0,0,1,0.0]
+    df.loc[len(df.index)] = ['kkkkkkkkkk',0.2426999584083827,0.2337711999415263,7,0.1428571428571429,1,39,3,0,0.0,4550827.0,0.0,0,0,1,0.0]
+    df.loc[len(df.index)] = ['kkkkkkkkkk',0.2426999584083827,0.2337711999415263,7,0.1428571428571429,1,39,4,0,0.0,4550827.0,0.0,0,0,1,0.0]
+    df.loc[len(df.index)] = ['kkkkkkkkkk',0.2426999584083827,0.2337711999415263,7,0.1428571428571429,1,39,5,0,0.0,4550827.0,0.0,0,0,1,0.0]
+    df.loc[len(df.index)] = ['kkkkkkkkkk',0.2426999584083827,0.2337711999415263,7,0.1428571428571429,1,39,6,0,0.0,4550827.0,0.0,0,0,1,0.0]
     data_frame = data_modification(df)
+    data_frame = data_frame.drop(data_frame.index[-6:-1])
     data_frame = data_frame.drop(data_frame.index[-1])
     ldd= data_frame.columns
     #X = df.drop('cid',axis =1)
