@@ -105,7 +105,6 @@ pycurl==7.43.0.6
 pydub==0.24.1
 Pygments==2.7.4
 pynndescent==0.5.2
-pyodbc===4.0.0-unsupported
 pyreadline==2.1
 pytest==6.2.3
 python-dateutil==2.8.1
