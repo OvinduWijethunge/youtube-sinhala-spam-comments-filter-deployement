@@ -19,9 +19,6 @@ cachetools==4.1.1
 certifi==2020.12.5
 colorama==0.4.4
 comtypes==1.1.9
-conda==4.10.1
-conda-build==3.17.7
-conda-verify==3.4.2
 contextlib2==0.6.0.post1
 converter==1.0.0
 cssselect==1.1.0
